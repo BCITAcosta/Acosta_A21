@@ -22,19 +22,32 @@ public class DriveHalf {
 
   public void configureMotors(){
     motor_FrontDriveMotor.setSmartCurrentLimit(DriveConstants.DriveCurrentLimit);
-    motor_FrontDriveMotor.setIdleMode(IdleMode.kCoast);
-
     motor_RearDriveMotor.setSmartCurrentLimit(DriveConstants.DriveCurrentLimit);
+    setIdleCoast();
+  }
+
+  public void setIdleCoast(){
+    motor_FrontDriveMotor.setIdleMode(IdleMode.kCoast);
     motor_RearDriveMotor.setIdleMode(IdleMode.kCoast);
   }
 
-  public void configureEncoder(){
+  public void setIdleBrake(){
+    motor_FrontDriveMotor.setIdleMode(IdleMode.kBrake);
+    motor_RearDriveMotor.setIdleMode(IdleMode.kBrake);
+  }
+
+  public void configureEncoder(boolean reverse){
     encoder_DriveEncoder.setDistancePerPulse(12.56637061/2048.);
+    encoder_DriveEncoder.setReverseDirection(reverse);
   }
 
   public void setSpeed(double speed){
     motor_FrontDriveMotor.set(speed);
     motor_RearDriveMotor.set(speed);
+  }
+
+  public void resetEncoderValue(){
+    encoder_DriveEncoder.reset();
   }
 
   public int getEncoderValue(){
@@ -45,19 +58,21 @@ public class DriveHalf {
     return encoder_DriveEncoder.getDistance();
   }
 
-  public void setInverted(){
-    if (motor_FrontDriveMotor.getInverted()){
-      motor_FrontDriveMotor.setInverted(false);
-    }else{
+  public boolean getEncoderDir(){
+    return encoder_DriveEncoder.getDirection();
+  }
+
+  public void setInverted(boolean invert){
+    if (motor_FrontDriveMotor.getInverted() && invert){
       motor_FrontDriveMotor.setInverted(true);
-    }
-
-    if (motor_RearDriveMotor.getInverted()){
-      motor_RearDriveMotor.setInverted(false);
     }else{
-      motor_RearDriveMotor.setInverted(true);
+      motor_FrontDriveMotor.setInverted(false);
     }
 
-    encoder_DriveEncoder.setReverseDirection(true);
+    if (motor_RearDriveMotor.getInverted() && invert){
+      motor_RearDriveMotor.setInverted(true);
+    }else{
+      motor_RearDriveMotor.setInverted(false);
+    }
   }
 }

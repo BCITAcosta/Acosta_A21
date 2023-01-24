@@ -4,12 +4,13 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 
 import frc.robot.subsystems.Drivetrain;
 
+import frc.robot.commands.DriveForward;
 import frc.robot.commands.defaultDrive;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -25,21 +26,19 @@ public class RobotContainer {
   private final Joystick joy_LeftDrive = new Joystick(0);
   private final Joystick joy_RightDrive = new Joystick(1);
 
-  // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+    /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    sub_Drivetrain.setDefaultCommand(new defaultDrive(sub_Drivetrain, joy_LeftDrive::getY, joy_RightDrive::getY));
+    sub_Drivetrain.setDefaultCommand(new defaultDrive(sub_Drivetrain, joy_LeftDrive, joy_RightDrive));
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  //public Command getAutonomousCommand() {
+  public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    //return m_autoCommand;
-  //}
+    Command driveForwardCommand = new DriveForward(sub_Drivetrain);
+    return driveForwardCommand;
+  }
 }

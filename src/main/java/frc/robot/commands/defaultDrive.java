@@ -6,27 +6,31 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.Drivetrain;
 
-import java.util.function.DoubleSupplier;
-
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class defaultDrive extends CommandBase {
 
   private final Drivetrain sub_Drivetrain;
-  DoubleSupplier j_leftAxis;
-  DoubleSupplier j_rightAxis;
+  Joystick j_leftAxis;
+  Joystick j_rightAxis;
 
-  public defaultDrive(Drivetrain Drivetrain, DoubleSupplier leftAxis, DoubleSupplier rightAxis) {
+  public defaultDrive(Drivetrain Drivetrain, Joystick leftJoy, Joystick rightJoy) {
     sub_Drivetrain = Drivetrain;
-    j_leftAxis = leftAxis;
-    j_rightAxis = rightAxis;
+    j_leftAxis = leftJoy;
+    j_rightAxis = rightJoy;
     addRequirements(sub_Drivetrain);
   }
 
   @Override
+  public void initialize(){
+    sub_Drivetrain.setDriveCoast();
+  }
+
+  @Override
   public void execute() {
-    sub_Drivetrain.setSpeeds(j_leftAxis.getAsDouble(), j_rightAxis.getAsDouble());
+    sub_Drivetrain.setSpeeds(j_leftAxis.getRawAxis(1), j_rightAxis.getRawAxis(1));
   }
 
   @Override

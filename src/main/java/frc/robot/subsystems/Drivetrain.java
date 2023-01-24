@@ -13,22 +13,56 @@ public class Drivetrain extends SubsystemBase{
     }
     
     public void configureDrive(){
-        drive_Right.setInverted();
-        //drive_Left.setInverted();
-        drive_Left.configureEncoder();
-        drive_Right.configureEncoder();
+        drive_Left.configureMotors();
+        drive_Right.configureMotors();
+        drive_Right.setInverted(false);
+        drive_Left.setInverted(false);
+        drive_Left.configureEncoder(false);
+        drive_Right.configureEncoder(true);
     }
 
     public void setSpeeds(double leftSpeed, double rightSpeed){
         drive_Left.setSpeed(leftSpeed);
-        drive_Right.setSpeed(rightSpeed);
+        drive_Right.setSpeed(-rightSpeed);
+    }
+
+    public void setDriveCoast(){
+        drive_Left.setIdleCoast();
+        drive_Right.setIdleCoast();
+    }
+
+    public void setDriveBrake(){
+        drive_Left.setIdleBrake();
+        drive_Right.setIdleBrake();
+    }
+
+    public void stop(){
+        setSpeeds(0, 0);
+    }
+
+    public void resetEncoders(){
+        drive_Left.resetEncoderValue();
+        drive_Right.resetEncoderValue();
+    }
+
+    public void driveForward(double speed, double distance){
+        setSpeeds(speed, speed);
+
+        if (drive_Left.getEncoderDist() >= distance || drive_Right.getEncoderDist() >= distance){
+            stop();
+        }
+        
     }
 
     @Override
     public void periodic(){
+        
         SmartDashboard.putNumber("Left Encoder",drive_Left.getEncoderValue());
         SmartDashboard.putNumber("Right Encoder", drive_Right.getEncoderValue());
         SmartDashboard.putNumber("Left Distance", drive_Left.getEncoderDist());
         SmartDashboard.putNumber("Right Distance", drive_Right.getEncoderDist());
+        SmartDashboard.putBoolean("Left Direction", drive_Left.getEncoderDir());
+        SmartDashboard.putBoolean("Right Direction", drive_Right.getEncoderDir());
+        
     }
 }
