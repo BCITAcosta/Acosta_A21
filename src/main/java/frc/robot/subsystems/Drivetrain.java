@@ -45,13 +45,18 @@ public class Drivetrain extends SubsystemBase{
         drive_Right.resetEncoderValue();
     }
 
-    public void driveForward(double speed, double distance){
-        setSpeeds(speed, speed);
-
-        if (drive_Left.getEncoderDist() >= distance || drive_Right.getEncoderDist() >= distance){
-            stop();
+    public boolean DriveDistance(double speed, double distance){
+        if (distance < 0){
+            setSpeeds(-speed, -speed);
+        }else{
+            setSpeeds(speed, speed);
         }
         
+        if (Math.abs(drive_Left.getEncoderDist()) >= Math.abs(distance) || Math.abs(drive_Right.getEncoderDist()) >= Math.abs(distance)){
+            stop();
+            return true;
+        }
+        return false;
     }
 
     @Override

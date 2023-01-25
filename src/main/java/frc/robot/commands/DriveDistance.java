@@ -4,11 +4,13 @@ import frc.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class DriveForward extends CommandBase{
+public class DriveDistance extends CommandBase{
 
     private final Drivetrain sub_drivetrain;
+    private double speed;
+    private double distance;
 
-    public DriveForward(Drivetrain drivetrain){
+    public DriveDistance(Drivetrain drivetrain, double speed, double distance){
         sub_drivetrain = drivetrain;
 
         addRequirements(drivetrain);
@@ -22,12 +24,17 @@ public class DriveForward extends CommandBase{
 
     @Override
     public void execute(){
-        sub_drivetrain.driveForward(0.25,24.0);
+        
+    }
+
+    @Override
+    public void end(boolean interrupted){
+        sub_drivetrain.stop();
     }
 
     @Override
     public boolean isFinished(){
-        return false;
+        return sub_drivetrain.DriveDistance(speed, distance);
     }
     
 }

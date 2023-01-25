@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
 
 import frc.robot.subsystems.Drivetrain;
 
-import frc.robot.commands.DriveForward;
+import frc.robot.commands.ForwardBack;
 import frc.robot.commands.defaultDrive;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -38,7 +38,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    Command driveForwardCommand = new DriveForward(sub_Drivetrain);
+    Command driveForwardCommand = new ForwardBack(sub_Drivetrain);
     return driveForwardCommand;
   }
 }
