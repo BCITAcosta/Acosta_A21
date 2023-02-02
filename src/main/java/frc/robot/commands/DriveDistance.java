@@ -7,11 +7,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class DriveDistance extends CommandBase{
 
     private final Drivetrain sub_drivetrain;
-    private double speed;
-    private double distance;
+    private double _speed;
+    private double _distance;
 
     public DriveDistance(Drivetrain drivetrain, double speed, double distance){
         sub_drivetrain = drivetrain;
+        _speed = speed;
+        _distance = distance;
 
         addRequirements(drivetrain);
     }
@@ -34,7 +36,7 @@ public class DriveDistance extends CommandBase{
 
     @Override
     public boolean isFinished(){
-        return sub_drivetrain.DriveDistance(speed, distance);
+        return sub_drivetrain.DriveDistance(_speed, _distance);
     }
     
 }

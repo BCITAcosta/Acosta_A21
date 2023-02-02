@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants.DriveConstants;
@@ -11,6 +12,8 @@ public class DriveHalf {
   private final CANSparkMax motor_FrontDriveMotor;
   private final CANSparkMax motor_RearDriveMotor;
   private final Encoder encoder_DriveEncoder;
+  private final RelativeEncoder  encoder_motor_FrontDrive;
+  private final RelativeEncoder encoder_motor_RearDrive;
   //private final String halfID;
 
   public DriveHalf(String halfID, int frontMotorSparkMaxID, int rearMotorSparkMaxID, int EncoderA, int EncoderB) {
@@ -18,12 +21,31 @@ public class DriveHalf {
     motor_FrontDriveMotor = new CANSparkMax(frontMotorSparkMaxID, MotorType.kBrushless);
     motor_RearDriveMotor = new CANSparkMax(rearMotorSparkMaxID, MotorType.kBrushless);
     encoder_DriveEncoder = new Encoder(EncoderA, EncoderB, false, Encoder.EncodingType.k4X);
+    encoder_motor_FrontDrive = motor_FrontDriveMotor.getEncoder();
+    encoder_motor_RearDrive = motor_RearDriveMotor.getEncoder();
+
   }
 
   public void configureMotors(){
     motor_FrontDriveMotor.setSmartCurrentLimit(DriveConstants.DriveCurrentLimit);
     motor_RearDriveMotor.setSmartCurrentLimit(DriveConstants.DriveCurrentLimit);
     setIdleCoast();
+  }
+
+  public double getMotorFrontEncoderVal(){
+    return encoder_motor_FrontDrive.getPosition();
+  }
+
+  public double getMotorRearEncoderVal(){
+    return encoder_motor_FrontDrive.getPosition();
+  }
+
+  public double getMotorFrontEncoderDist(){
+    return (2*Math.PI*DriveConstants.WheelRadius*(encoder_motor_FrontDrive.getPosition()/DriveConstants.DriveGearboxRatio));
+  }
+
+  public double getMotorRearEncoderDist(){
+    return (2*Math.PI*DriveConstants.WheelRadius*(encoder_motor_RearDrive.getPosition()/DriveConstants.DriveGearboxRatio));
   }
 
   public void setIdleCoast(){

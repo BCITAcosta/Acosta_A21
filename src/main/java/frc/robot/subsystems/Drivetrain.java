@@ -1,12 +1,16 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants.DriveConstants;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.ADIS16470_IMU;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase{
     private final DriveHalf drive_Left = new DriveHalf("Left", DriveConstants.FrontLeftSparkMaxID, DriveConstants.RearLeftSparkMaxID, DriveConstants.LeftEncoderA, DriveConstants.LeftEncoderB);
     private final DriveHalf drive_Right = new DriveHalf("Right", DriveConstants.FrontRightSparkMaxID, DriveConstants.RearRightSparkMaxID, DriveConstants.RightEncoderA, DriveConstants.RightEncoderB);
+    private final ADIS16470_IMU imu = new ADIS16470_IMU();
 
     public Drivetrain(){
         configureDrive();
@@ -45,14 +49,22 @@ public class Drivetrain extends SubsystemBase{
         drive_Right.resetEncoderValue();
     }
 
+    public double getIMUAngle(){
+        return imu.getAngle();
+    }
+
     public boolean DriveDistance(double speed, double distance){
+    
         if (distance < 0){
             setSpeeds(-speed, -speed);
         }else{
             setSpeeds(speed, speed);
         }
         
-        if (Math.abs(drive_Left.getEncoderDist()) >= Math.abs(distance) || Math.abs(drive_Right.getEncoderDist()) >= Math.abs(distance)){
+        // setSpeeds(speed, speed);
+
+        if (Math.abs(drive_Left.getEncoderDist()) >= Math.abs(distance) || 
+        Math.abs(drive_Right.getEncoderDist()) >= Math.abs(distance)){
             stop();
             return true;
         }
@@ -68,6 +80,15 @@ public class Drivetrain extends SubsystemBase{
         SmartDashboard.putNumber("Right Distance", drive_Right.getEncoderDist());
         SmartDashboard.putBoolean("Left Direction", drive_Left.getEncoderDir());
         SmartDashboard.putBoolean("Right Direction", drive_Right.getEncoderDir());
-        
+
+        // SmartDashboard.putNumber("Left Motor Encoder", drive_Left.getMotorEncoderVal());
+        // SmartDashboard.putNumber("Right Motor Encoder", drive_Right.getMotorEncoderVal());
+
+        SmartDashboard.putNumber("LF Motor Encoder", drive_Left.getMotorFrontEncoderDist());
+        SmartDashboard.putNumber("LR Motor Encoder", drive_Left.getMotorRearEncoderDist());
+        SmartDashboard.putNumber("RF Motor Encoder", drive_Right.getMotorFrontEncoderDist());
+        SmartDashboard.putNumber("RR Motor Encoder", drive_Right.getMotorRearEncoderDist());
+
+        SmartDashboard.putNumber("Angle", getIMUAngle());        
     }
 }

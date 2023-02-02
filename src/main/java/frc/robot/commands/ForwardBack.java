@@ -9,6 +9,6 @@ public class ForwardBack extends SequentialCommandGroup{
     public ForwardBack(Drivetrain sub_Drivetrain){
         addCommands(
             new DriveDistance(sub_Drivetrain, 0.25, 24.0),
-            new DriveDistance(sub_Drivetrain, -0.25, -24.0));
+            new DriveDistance(sub_Drivetrain, 0.25, -24.0));
     } 
 }

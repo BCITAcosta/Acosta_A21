@@ -28,6 +28,9 @@ public final class Constants {
         public static final int RightEncoderB = 3;
 
         public static final int DriveCurrentLimit = 40;
+
+        public static final double WheelRadius = 2.0;
+        public static final double DriveGearboxRatio = 7.3673469388;
     }
 
 }
