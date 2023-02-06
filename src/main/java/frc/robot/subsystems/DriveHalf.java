@@ -40,12 +40,20 @@ public class DriveHalf {
     return encoder_motor_FrontDrive.getPosition();
   }
 
-  public double getMotorFrontEncoderDist(){
+  public double getMotorFrontEncoderDistInch(){
     return (2*Math.PI*DriveConstants.WheelRadius*(encoder_motor_FrontDrive.getPosition()/DriveConstants.DriveGearboxRatio));
   }
 
-  public double getMotorRearEncoderDist(){
+  public double getMotorFrontEncoderDistMeters(){
+    return (2*Math.PI*DriveConstants.WheelRadius*0.0254*(encoder_motor_FrontDrive.getPosition()/DriveConstants.DriveGearboxRatio));
+  }
+
+  public double getMotorRearEncoderDistInch(){
     return (2*Math.PI*DriveConstants.WheelRadius*(encoder_motor_RearDrive.getPosition()/DriveConstants.DriveGearboxRatio));
+  }
+
+  public double getMotorRearEncoderDistMeters(){
+    return (2*Math.PI*DriveConstants.WheelRadius*0.0254*(encoder_motor_RearDrive.getPosition()/DriveConstants.DriveGearboxRatio));
   }
 
   public void setIdleCoast(){
